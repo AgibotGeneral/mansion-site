@@ -1,0 +1,187 @@
+/**
+ * custom.css
+ * - Light mode variables live in :root
+ * - Dark mode overrides live in [data-theme='dark']
+ * - All your homepage styles use the tokens so both themes look good
+ */
+
+/* =========================
+   Theme tokens
+   ========================= */
+
+/* Light mode (default) */
+:root {
+  /* Primary brand */
+  --ifm-color-primary: #8a4bff;
+  --ifm-color-primary-dark: #7a3af2;
+  --ifm-color-primary-darker: #7332ee;
+  --ifm-color-primary-darkest: #5d21d4;
+  --ifm-color-primary-light: #9a63ff;
+  --ifm-color-primary-lighter: #a26fff;
+  --ifm-color-primary-lightest: #b896ff;
+
+  --ifm-code-font-size: 90%;
+
+  /* Global surfaces */
+  --ifm-background-color: #ffffff;
+  --ifm-navbar-background-color: rgba(255, 255, 255, 0.75);
+
+  /* Mansion-specific tokens (light) */
+  --m-border: rgba(10, 12, 16, 0.12);
+  --m-border-soft: rgba(10, 12, 16, 0.08);
+  --m-surface: rgba(10, 12, 16, 0.03);
+  --m-surface-2: rgba(10, 12, 16, 0.02);
+
+  --m-text: rgba(10, 12, 16, 0.92);
+  --m-text-muted: rgba(10, 12, 16, 0.65);
+  --m-kicker: rgba(10, 12, 16, 0.60);
+
+  --m-code-bg: rgba(10, 12, 16, 0.05);
+  --m-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+
+  --m-hero-bg:
+    radial-gradient(1200px 600px at 10% 0%, rgba(138, 75, 255, 0.18), transparent 55%),
+    radial-gradient(1200px 600px at 90% 10%, rgba(255, 80, 145, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.0));
+}
+
+/* Dark mode */
+[data-theme='dark'] {
+  /* Global surfaces */
+  --ifm-navbar-background-color: rgba(12, 12, 16, 0.7);
+  --ifm-background-color: #0c0c10;
+
+  /* Mansion-specific tokens (dark) */
+  --m-border: rgba(255, 255, 255, 0.10);
+  --m-border-soft: rgba(255, 255, 255, 0.08);
+  --m-surface: rgba(255, 255, 255, 0.03);
+  --m-surface-2: rgba(255, 255, 255, 0.02);
+
+  --m-text: rgba(255, 255, 255, 0.92);
+  --m-text-muted: rgba(255, 255, 255, 0.72);
+  --m-kicker: rgba(255, 255, 255, 0.70);
+
+  --m-code-bg: rgba(0, 0, 0, 0.35);
+  --m-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+
+  --m-hero-bg:
+    radial-gradient(1200px 600px at 10% 0%, rgba(138, 75, 255, 0.45), transparent 55%),
+    radial-gradient(1200px 600px at 90% 10%, rgba(255, 80, 145, 0.28), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.0));
+}
+
+/* =========================
+   Global tweaks
+   ========================= */
+
+.navbar {
+  backdrop-filter: blur(10px);
+}
+
+/* =========================
+   Homepage styles
+   ========================= */
+
+.mansionHero {
+  padding: 4rem 0 2rem 0;
+  background: var(--m-hero-bg);
+  border-bottom: 1px solid var(--m-border-soft);
+  color: var(--m-text);
+}
+
+.mansionHeroGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 996px) {
+  .mansionHeroGrid { grid-template-columns: 1fr; }
+}
+
+.mansionKicker {
+  color: var(--m-kicker);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.mansionTitle {
+  font-size: 3.4rem;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.mansionSubtitle {
+  margin-top: 0.75rem;
+  font-size: 1.1rem;
+  color: var(--m-text-muted);
+  max-width: 52ch;
+}
+
+.mansionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.mansionMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.pill {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--m-border);
+  border-radius: 999px;
+  color: var(--m-text-muted);
+  font-size: 0.85rem;
+}
+
+.mansionCard {
+  border: 1px solid var(--m-border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--m-surface);
+  box-shadow: var(--m-shadow);
+}
+
+.mansionCardHeader {
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--m-border-soft);
+  color: var(--m-text);
+}
+
+.mansionCode {
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  background: var(--m-code-bg);
+}
+
+.mansionCardFooter {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--m-border-soft);
+  color: var(--m-text-muted);
+}
+
+.featureCard {
+  border: 1px solid var(--m-border);
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  background: var(--m-surface-2);
+  height: 100%;
+}
+
+.callout {
+  border: 1px solid var(--m-border);
+  border-radius: 16px;
+  padding: 1.2rem 1.2rem;
+  background: var(--m-surface-2);
+}

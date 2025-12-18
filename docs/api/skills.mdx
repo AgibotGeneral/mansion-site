@@ -1,0 +1,382 @@
+---
+title: Skills API
+sidebar_position: 4
+toc_min_heading_level: 2
+toc_max_heading_level: 2
+---
+
+MansionGym exposes *high-level skills* as **named actions** dispatched through `env.step(...)`, while keeping task code clean and staying compatible with Gymnasium’s `Env.step` interface.
+
+### Calling skills
+
+#### Step signature
+
+`MansionGym.step(...)` follows the Gymnasium convention:
+
+```python
+obs, reward, terminated, truncated, info = env.step(...)
+```
+
+> In the current `MansionGym` implementation, `reward` is always `0.0`, `terminated` becomes `True` when `steps >= max_steps`, and `truncated` is always `False`.
+
+#### Input format (important)
+
+This wrapper accepts **only AI2-THOR-style inputs**:
+
+```python
+# Style A: string action + keyword params
+obs, reward, terminated, truncated, info = env.step(action="MoveTo", direction="forward")
+
+# Style B: dict with an "action" key
+obs, reward, terminated, truncated, info = env.step({"action": "MoveTo", "direction": "forward"})
+```
+
+Legacy formats like `{"MoveTo": {...}}` are **not supported**.
+
+#### Dispatch behavior
+
+- If `action` is one of the registered skill names, the env calls the corresponding Python skill.
+- Otherwise, the action is forwarded to AI2-THOR as a raw `controller.step(action=..., **params)` call.
+
+#### Registered skills
+
+These are the skills currently registered in `env.skill_registry`:
+
+- `MoveTo`
+- `GoNearObject`
+- `OpenDoor`
+- `CloseDoor`
+- `PickupObject`
+- `GoToLandmark`
+- `CallElevator`
+- `TakeStairs`
+- `UseElevator`
+- `PutObject`
+
+---
+
+## MoveTo
+
+Moves the robot **0.3 m** in a relative direction by snapping to the nearest reachable position and teleporting there.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="MoveTo",
+    direction="forward"  # {"forward","backward","left","right"}
+)
+```
+
+### Parameters
+
+- `direction` (`str`, required): One of `"forward"`, `"backward"`, `"left"`, `"right"`.
+
+### Behavior
+
+- Builds a local displacement vector and rotates it by the agent yaw.
+- Queries AI2-THOR `GetReachablePositions`.
+- Teleports to the closest reachable point (within a threshold) using `Teleport`.
+
+### Returns
+
+`info` includes:
+
+- `lastActionSuccess` (`bool`)
+- `errorMessage` (`str`)
+
+### Example
+
+```python
+obs, info = env.reset()
+
+obs, reward, terminated, truncated, info = env.step(action="MoveTo", direction="forward")
+assert "lastActionSuccess" in info
+```
+
+---
+
+## GoNearObject
+
+Teleports the robot to a reachable point near an object and orients the robot to face it.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="GoNearObject",
+    objectId="Mug|+00.12|+00.88|-01.35"
+)
+```
+
+### Parameters
+
+- `objectId` (`str`, required): AI2-THOR objectId of the target object.
+
+### Behavior
+
+- Locates the object in the current observation metadata.
+- Picks a nearby reachable point (default approach distance ≈ 0.4 m).
+- Teleports the agent to that point and sets yaw toward the object.
+
+### Example
+
+```python
+mug_id = "Mug|+00.12|+00.88|-01.35"
+obs, reward, terminated, truncated, info = env.step(action="GoNearObject", objectId=mug_id)
+```
+
+---
+
+## OpenDoor
+
+Opens a door if the robot is close enough, rotating to face the door first.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="OpenDoor",
+    objectId="Doorway|+01.23|+00.00|-02.34"
+)
+```
+
+### Parameters
+
+- `objectId` (`str`, required): door objectId.
+
+### Behavior
+
+- Fails if the door is farther than the working distance (1.5 m).
+- Teleports in-place to face the door (yaw snaps to a cardinal direction).
+- Executes AI2-THOR `OpenObject`, then updates door-graph/edge states.
+
+### Example
+
+```python
+door_id = "Doorway|+01.23|+00.00|-02.34"
+obs, reward, terminated, truncated, info = env.step(action="OpenDoor", objectId=door_id)
+```
+
+---
+
+## CloseDoor
+
+Same as `OpenDoor`, but closes the door.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="CloseDoor",
+    objectId="Doorway|+01.23|+00.00|-02.34"
+)
+```
+
+### Parameters
+
+- `objectId` (`str`, required): door objectId.
+
+### Behavior
+
+Executes AI2-THOR `CloseObject` and updates door-graph/edge states.
+
+---
+
+## PickupObject
+
+Picks up a nearby object and updates environment bookkeeping for held objects.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="PickupObject",
+    objectId="Mug|+00.12|+00.88|-01.35"
+)
+```
+
+### Parameters
+
+- `objectId` (`str`, required): target objectId.
+
+### Behavior
+
+- Fails if the object is farther than the working distance (1.5 m).
+- Executes AI2-THOR `PickupObject`.
+- On success, caches the held object (`env.held_object`) and related states for downstream logic.
+
+### Example
+
+```python
+mug_id = "Mug|+00.12|+00.88|-01.35"
+
+# Typically you approach first
+env.step(action="GoNearObject", objectId=mug_id)
+
+obs, reward, terminated, truncated, info = env.step(action="PickupObject", objectId=mug_id)
+```
+
+---
+
+## GoToLandmark
+
+Teleports the robot to a named landmark (room) **on the same floor**.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="GoToLandmark",
+    landmark_name="F1_Kitchen"
+)
+```
+
+### Parameters
+
+- `landmark_name` (`str`, required): key in `env.landmarks`.
+
+### Behavior
+
+- Validates the landmark exists.
+- Rejects cross-floor navigation (you must use stairs/elevator skills for floor changes).
+- Uses `env.teleport_to_room(...)` under the hood.
+
+### Example
+
+```python
+obs, reward, terminated, truncated, info = env.step(action="GoToLandmark", landmark_name="F1_Kitchen")
+```
+
+---
+
+## CallElevator
+
+Opens the elevator door (if nearby) and teleports the robot into the elevator interior on the current floor.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="CallElevator",
+    objectId="ElevatorDoor|+00.50|+00.00|-03.10"
+)
+```
+
+### Parameters
+
+- `objectId` (`str`, required): elevator door objectId.
+
+### Behavior
+
+- Requires proximity (working distance 1.5 m).
+- Rotates to face the door, opens it (`OpenObject`, with `forceAction=True`), and teleports to the elevator’s interior landmark position.
+
+### Example
+
+```python
+elevator_door_id = "ElevatorDoor|+00.50|+00.00|-03.10"
+obs, reward, terminated, truncated, info = env.step(action="CallElevator", objectId=elevator_door_id)
+```
+
+---
+
+## TakeStairs
+
+Moves the agent between **adjacent floors** using stairs.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(action="TakeStairs", direction="up")
+# or:
+obs, reward, terminated, truncated, info = env.step({"action": "TakeStairs", "direction": "down"})
+```
+
+### Parameters
+
+- `direction` (`str`, required): `"up"` or `"down"` (case-insensitive).
+
+### Behavior
+
+Computes `target_floor = current_floor ± 1` and calls `env.update_floor(target_floor)`.
+
+### Example
+
+```python
+# go from floor 1 -> 2
+obs, reward, terminated, truncated, info = env.step(action="TakeStairs", direction="up")
+```
+
+---
+
+## UseElevator
+
+Moves the elevator to a specified target floor (floor transition handled by the env).
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="UseElevator",
+    targetfloor=2
+)
+```
+
+### Parameters
+
+- `targetfloor` (`int`, required): destination floor number.
+
+> Note: the parameter name is currently `targetfloor` (no underscore).
+
+### Behavior
+
+Calls `env.update_floor(int(targetfloor))`.
+
+### Example
+
+```python
+# (Usually) CallElevator first, then ride it
+env.step(action="CallElevator", objectId="ElevatorDoor|+00.50|+00.00|-03.10")
+obs, reward, terminated, truncated, info = env.step(action="UseElevator", targetfloor=3)
+```
+
+---
+
+## PutObject
+
+Places the currently held object onto a target receptacle/surface if within working distance.
+
+### Signature
+
+```python
+obs, reward, terminated, truncated, info = env.step(
+    action="PutObject",
+    objectId="CounterTop|+01.0|+00.9|-02.0"
+)
+```
+
+### Parameters
+
+- `objectId` (`str`, required): AI2-THOR objectId of the target receptacle/surface.
+
+### Behavior
+
+- Looks up the target receptacle/surface in the current observation metadata.
+- Computes the 3D Euclidean distance between the agent and the target.
+- If the target is within **1.5 m**, issues AI2-THOR `PutObject(objectId=...)`.
+- On success, clears `env.held_object`, `env.held_object_cur_state`, and `env.recepted_objs`.
+
+### Notes
+
+- You must already be holding an object; otherwise AI2-THOR will fail the `PutObject` action.
+- This skill is now registered in `env.skill_registry` as `PutObject`.
+
+### Example
+
+```python
+# Put the currently held object onto a receptacle/surface
+receptacle_id = "CounterTop|+01.0|+00.9|-02.0"
+obs, reward, terminated, truncated, info = env.step(action="PutObject", objectId=receptacle_id)
+
+```
