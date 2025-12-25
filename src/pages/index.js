@@ -101,9 +101,8 @@ function Hero() {
               MANSION
             </h1>
             <p className="mansionSubtitle">
-              Multi-floor lANguage-to-3D Scene generatIOn for loNg-horizon tasks
+              <b>M</b>ulti-floor l<b>A</b>nguage-to-3D Scene generat<b>I</b><b>O</b>n for lo<b>N</b>g-horizon ta<b>S</b>ks
             </p>
-
             <div className="mansionButtons">
               <Link className="button button--primary button--lg" to="/docs/getting-started/quickstart">
                 Quickstart
@@ -111,51 +110,17 @@ function Hero() {
               <Link className="button button--secondary button--lg" to="/docs/api/overview">
                 API reference
               </Link>
-              <Link className="button button--outline button--lg" to="/docs/dataset/mansionworld">
+              <Link className="button button--outline button--lg mansionButtonGray" to="/docs/dataset/mansionworld">
                 MansionWorld dataset
               </Link>
+            </div>
+
+            <div className="mansionHeroLogoContainer">
+              <img src="/img/智元logo英文-白色-横版.png" alt="Agibot Logo" className="mansionHeroLogo" />
             </div>
           </div>
         </div>
       </header>
-
-      <section className="mansionHeroDetails">
-        <div className="container">
-          <div className="mansionHeroGrid">
-            <div>
-              <div className="mansionKicker">Embodied AI · Multi-floor · Long-horizon</div>
-              <div className="mansionMeta">
-                <span className="pill">Multi-floor buildings</span>
-                <span className="pill">Stairs & elevators</span>
-                <span className="pill">Task-level skills</span>
-                <span className="pill">Language-conditioned scenes</span>
-              </div>
-            </div>
-
-            {/* Right column */}
-            <div>
-              {/* Drag-to-rotate preview (Commented out) */}
-              {/*
-              <div className="mansionCard">
-                <div className="mansionCardHeader">Interactive preview</div>
-
-                <BrowserOnly fallback={<div style={{ height: 360 }} />}>
-                  {() => {
-                    const DragRotateViewer = require('../components/DragRotateViewer').default;
-                    return <DragRotateViewer height={360} />;
-                  }}
-                </BrowserOnly>
-
-                <div className="mansionCardFooter">
-                  <Link to="/docs/dataset/mansionworld">See MansionWorld</Link> ·{' '}
-                  <Link to="/docs/environment/overview">See environment</Link>
-                </div>
-              </div>
-              */}
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
