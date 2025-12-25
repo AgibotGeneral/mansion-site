@@ -180,13 +180,13 @@
    ========================= */
 
 .mansionDatasetPreview {
-  padding: 5rem 0;
+  padding: 2rem 0;
   background: var(--ifm-background-color);
 }
 
 .mansionSectionHeader {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .mansionSectionHeader h2 {
@@ -205,7 +205,7 @@
 
 .mansionDistributionFull {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .mansionDistributionFull img {
@@ -217,8 +217,8 @@
 
 .mansionSectionSubHeader {
   text-align: center;
-  margin-top: 4rem;
-  margin-bottom: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .mansionSectionSubHeader h3 {
@@ -235,8 +235,8 @@
 .mansionSceneGridTwoUp {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 3rem;
-  row-gap: 4rem;
+  column-gap: 1rem;
+  row-gap: 1rem;
 }
 
 .mansionSceneItem {
@@ -247,11 +247,11 @@
 
 .mansionSceneImageContainer {
   width: 100%;
-  aspect-ratio: 16 / 10; /* Fixed rectangular area */
+  aspect-ratio: 2.4 / 1; /* Even more compact horizontally-oriented area */
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
   background: transparent;
 }
 
@@ -271,7 +271,7 @@
 
 .mansionSingleLineTitle {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--m-text);
   white-space: nowrap; /* Forces single line */
@@ -343,4 +343,154 @@
   border-radius: 16px;
   padding: 1.2rem 1.2rem;
   background: var(--m-surface-2);
+}
+
+/* =========================
+   Interactive Showcase Section
+   ========================= */
+
+.mansionShowcase {
+  padding: 3rem 0;
+  background: var(--m-surface-2);
+  border-bottom: 1px solid var(--m-border-soft);
+}
+
+.mansionShowcaseCard {
+  border: 1px solid var(--m-border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--ifm-background-color);
+  box-shadow: var(--m-shadow);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mansionShowcaseHeader {
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--m-border-soft);
+  color: var(--m-text);
+  background: var(--m-surface);
+}
+
+.mansionBuildingSection {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.mansionSelectorHint {
+  font-size: 0.85rem;
+  color: var(--m-text-muted);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.mansionBuildingLayout {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 1.5rem;
+  flex-grow: 1;
+  min-height: 400px;
+}
+
+.mansionFloorMarkers {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 1.5rem 0;
+  width: 50px;
+}
+
+.mansionFloorMarkerItem {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.mansionFloorMarkerItem:hover .mansionMarkerCircle {
+  border-color: var(--ifm-color-primary);
+  transform: rotate(-45deg) scale(1.1);
+}
+
+.mansionMarkerCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50% 50% 0 50%; /* Sharp corner at bottom-right */
+  transform: rotate(-45deg); /* Rotates bottom-right to the right */
+  background: var(--ifm-background-color);
+  border: 2px solid var(--m-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--m-text);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  transition: all 0.2s;
+}
+
+.mansionMarkerNumber {
+  transform: rotate(45deg);
+  display: inline-block;
+  line-height: 1;
+}
+
+.mansionFloorMarkerItem.active .mansionMarkerCircle {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: white;
+  box-shadow: 0 0 15px rgba(138, 75, 255, 0.4);
+}
+
+.mansionBuildingImgContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mansionBuildingImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.mansionVideoContainer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.mansionVideoContainer.wide {
+  aspect-ratio: 1.6 / 1;
+}
+
+.mansionVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mansionTaskDescription {
+  padding: 1rem;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--m-text);
+  border-top: 1px solid var(--m-border-soft);
+  background: var(--m-surface);
+  line-height: 1.5;
 }

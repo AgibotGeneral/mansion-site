@@ -1,5 +1,27 @@
-.vscode/
-.docusaurus/
+# Dependencies
 node_modules/
 
-12345678We$
+# Docusaurus
+.docusaurus/
+.cache-loader/
+build/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Data and Logs
+saved_frames/
+scenedata/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

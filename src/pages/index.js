@@ -1,7 +1,95 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import BrowserOnly from '@docusaurus/BrowserOnly';
+
+function InteractiveShowcase() {
+  const [activeFloor, setActiveFloor] = useState(1);
+  const floors = [1, 2, 3, 4, 5, 6];
+
+  return (
+    <section className="mansionShowcase">
+      <div className="container">
+        <div className="mansionSectionHeader">
+          <h2>Interactive Multi-Floor Showcase</h2>
+          <p className="mansionDescription">
+            Explore floor-by-floor layouts and complex long-horizon tasks across the mansion.
+          </p>
+        </div>
+
+        <div className="row">
+          {/* Left Column: Building Map & Floor Selection */}
+          <div className="col col--4">
+            <div className="mansionShowcaseCard">
+              <div className="mansionShowcaseHeader">Building Map</div>
+              <div className="mansionBuildingSection">
+                <p className="mansionSelectorHint">Click to switch floor preview:</p>
+                <div className="mansionBuildingLayout">
+                  <div className="mansionFloorMarkers">
+                    {floors.slice().reverse().map((f) => (
+                      <button
+                        key={f}
+                        className={`mansionFloorMarkerItem ${activeFloor === f ? 'active' : ''}`}
+                        onClick={() => setActiveFloor(f)}
+                      >
+                        <span className="mansionMarkerCircle">
+                          <span className="mansionMarkerNumber">{f}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mansionBuildingImgContainer">
+                    <img src="/img/building.png" alt="Building Diagram" className="mansionBuildingImg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Middle Column: Floor Video (Wider) */}
+          <div className="col col--5">
+            <div className="mansionShowcaseCard">
+              <div className="mansionShowcaseHeader">Floor {activeFloor} Preview</div>
+              <div className="mansionVideoContainer wide">
+                <video
+                  key={`floor-${activeFloor}`}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="mansionVideo"
+                >
+                  <source src={`/video/floor${activeFloor}_rotation.mp4`} type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Task Video */}
+          <div className="col col--3">
+            <div className="mansionShowcaseCard">
+              <div className="mansionShowcaseHeader">Long-Horizon Task</div>
+              <div className="mansionVideoContainer">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="mansionVideo"
+                >
+                  <source src="/video/output_video.mp4" type="video/mp4" />
+                </video>
+              </div>
+              <div className="mansionTaskDescription">
+                "Starting from the 4th floor, go to the 1st floor to pick up my noodle delivery, then put it into the refrigerator in the 5th-floor dining area."
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Hero() {
   return (
@@ -46,7 +134,8 @@ function Hero() {
 
             {/* Right column */}
             <div>
-              {/* Drag-to-rotate preview */}
+              {/* Drag-to-rotate preview (Commented out) */}
+              {/*
               <div className="mansionCard">
                 <div className="mansionCardHeader">Interactive preview</div>
 
@@ -62,6 +151,7 @@ function Hero() {
                   <Link to="/docs/environment/overview">See environment</Link>
                 </div>
               </div>
+              */}
             </div>
           </div>
         </div>
@@ -146,6 +236,7 @@ export default function Home() {
       description="Multi-floor language-to-3D scene generation for long-horizon embodied tasks"
     >
       <Hero />
+      <InteractiveShowcase />
       <DatasetPreview />
       <main className="container margin-vert--lg">
         <section className="row">
