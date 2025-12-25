@@ -83,21 +83,72 @@
    ========================= */
 
 .mansionHero {
-  padding: 4rem 0 2rem 0;
-  background: var(--m-hero-bg);
-  border-bottom: 1px solid var(--m-border-soft);
+  padding: 14rem 0 12rem 0;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('/img/teaser.png');
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+}
+
+.mansionHeroDetails {
+  padding: 4rem 0;
+  background: var(--ifm-background-color);
   color: var(--m-text);
+  border-bottom: 1px solid var(--m-border-soft);
+}
+
+.mansionHeroHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.mansionTitle {
+  font-size: 6.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 0 0 40px rgba(138, 75, 255, 0.7), 0 2px 15px rgba(0, 0, 0, 0.5);
+}
+
+.mansionSubtitle {
+  margin-top: 1.5rem;
+  font-size: 1.8rem;
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 1000px;
+  line-height: 1.4;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 .mansionHeroGrid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
   align-items: start;
+  text-align: left;
+  width: 100%;
 }
 
 @media (max-width: 996px) {
-  .mansionHeroGrid { grid-template-columns: 1fr; }
+  .mansionHero {
+    padding: 8rem 0;
+  }
+  .mansionTitle {
+    font-size: 4rem;
+  }
+  .mansionSubtitle {
+    font-size: 1.4rem;
+  }
+  .mansionHeroGrid { 
+    grid-template-columns: 1fr; 
+    gap: 2rem;
+  }
 }
 
 .mansionKicker {
@@ -105,27 +156,15 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-
-.mansionTitle {
-  font-size: 3.4rem;
-  line-height: 1.05;
-  margin: 0;
-}
-
-.mansionSubtitle {
-  margin-top: 0.75rem;
-  font-size: 1.1rem;
-  color: var(--m-text-muted);
-  max-width: 52ch;
+  margin-bottom: 1rem;
 }
 
 .mansionButtons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  justify-content: center;
 }
 
 .mansionMeta {
@@ -133,6 +172,126 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1.5rem;
+  justify-content: flex-start;
+}
+
+/* =========================
+   Dataset Preview Section
+   ========================= */
+
+.mansionDatasetPreview {
+  padding: 5rem 0;
+  background: var(--ifm-background-color);
+}
+
+.mansionSectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.mansionSectionHeader h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.mansionSectionHeader p.mansionDescription {
+  font-size: 1.3rem;
+  color: var(--m-text);
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.mansionDistributionFull {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.mansionDistributionFull img {
+  width: 100%;
+  max-width: 1100px;
+  display: block;
+  margin: 0 auto;
+}
+
+.mansionSectionSubHeader {
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+
+.mansionSectionSubHeader h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.mansionSectionSubHeader p {
+  color: var(--m-text-muted);
+  font-size: 1.1rem;
+}
+
+.mansionSceneGridTwoUp {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 3rem;
+  row-gap: 4rem;
+}
+
+.mansionSceneItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mansionSceneImageContainer {
+  width: 100%;
+  aspect-ratio: 16 / 10; /* Fixed rectangular area */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  background: transparent;
+}
+
+.mansionSceneImageContainer img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain; /* Centers and scales the image within the container */
+}
+
+.mansionSceneInfoCenter {
+  width: 100%;
+  text-align: center;
+}
+
+.mansionSingleLineTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--m-text);
+  white-space: nowrap; /* Forces single line */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds ... if text is too long */
+  width: 100%;
+}
+
+@media (max-width: 996px) {
+  .mansionSingleLineTitle {
+    white-space: normal; /* Allow wrap on small screens */
+    text-overflow: initial;
+  }
+}
+
+@media (max-width: 768px) {
+  .mansionSceneGridTwoUp {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
 }
 
 .pill {
