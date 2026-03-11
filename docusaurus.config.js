@@ -12,15 +12,18 @@ const config = {
   tagline: 'Multi-floor language-to-3D scene generation for long-horizon embodied tasks',
   favicon: 'img/favicon.ico',
 
-  // TODO: set to your GitHub org/user + repo
-  url: 'https://your-domain.com',
-  baseUrl: '/',
+  url: 'https://AgibotGeneral.github.io',
+  baseUrl: process.env.BASE_URL || '/mansion-site/',
 
-  organizationName: 'your-org',
-  projectName: 'mansion',
+  organizationName: 'AgibotGeneral',
+  projectName: 'mansion-site',
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   i18n: { defaultLocale: 'en', locales: ['en'] },
 
@@ -33,7 +36,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: '/docs',
           editUrl:
-            'https://github.com/your-org/mansion/edit/main/website/', // TODO
+            'https://github.com/AgibotGeneral/mansion-site/edit/main/mansionsite/',
           showLastUpdateAuthor: false,
           showLastUpdateTime: true,
         },
@@ -55,7 +58,6 @@ const config = {
           { to: '/docs/dataset/mansionworld', label: 'MansionWorld dataset', position: 'left' },
           { to: '/docs/api/overview', label: 'Mansion API', position: 'left' },
           { to: '/docs/intro', label: 'Documentation', position: 'left' },
-          { href: 'https://github.com/your-org/mansion', label: 'GitHub', position: 'right' }, // TODO
         ],
       },
       footer: {

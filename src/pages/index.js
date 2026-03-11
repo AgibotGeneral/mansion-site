@@ -11,15 +11,15 @@ function InteractiveShowcase() {
     <section className="mansionShowcase">
       <div className="container">
         <div className="mansionSectionHeader">
-          <h2>Interactive Multi-Floor Showcase</h2>
+          <h2>Meet MANSION</h2>
           <p className="mansionDescription">
-            Explore floor-by-floor layouts and complex long-horizon tasks across the mansion.
+            Generate building-scale, multi-floor 3D interactive worlds from a single natural-language prompt, and explore MansionWorld with 1,000+ buildings. Bring your embodied agents and train at scale!
           </p>
         </div>
 
         <div className="row">
           {/* Left Column: Building Map & Floor Selection */}
-          <div className="col col--4">
+          <div className="col col--3">
             <div className="mansionShowcaseCard">
               <div className="mansionShowcaseHeader">Building Map</div>
               <div className="mansionBuildingSection">
@@ -66,7 +66,7 @@ function InteractiveShowcase() {
           </div>
 
           {/* Right Column: Task Video */}
-          <div className="col col--3">
+          <div className="col col--4">
             <div className="mansionShowcaseCard">
               <div className="mansionShowcaseHeader">Long-Horizon Task</div>
               <div className="mansionVideoContainer">
@@ -101,23 +101,47 @@ function Hero() {
               MANSION
             </h1>
             <p className="mansionSubtitle">
-              <b>M</b>ulti-floor l<b>A</b>nguage-to-3D Scene generat<b>I</b><b>O</b>n for lo<b>N</b>g-horizon ta<b>S</b>ks
+              <b>M</b>ulti-floor l<b>AN</b>guage-to-3D <b>S</b>cene generat<b>IO</b>n for lo<b>N</b>g-horizon tasks
             </p>
-            <div className="mansionButtons">
-              <Link className="button button--primary button--lg" to="/docs/getting-started/quickstart">
-                Quickstart
-              </Link>
-              <Link className="button button--secondary button--lg" to="/docs/api/overview">
-                API reference
-              </Link>
-              <Link className="button button--outline button--lg mansionButtonGray" to="/docs/dataset/mansionworld">
-                MansionWorld dataset
-              </Link>
+
+            <div className="mansionAuthors">
+              <p className="mansionAuthorLine">
+                Lirong Che<sup>*,1,2</sup>&ensp;
+                Shuo Wen<sup>*,3,§</sup>&ensp;
+                Shan Huang<sup>1</sup>&ensp;
+                Chuang Wang<sup>2</sup>
+              </p>
+              <p className="mansionAuthorLine">
+                Yuzhe Yang<sup>2</sup>&ensp;
+                Gregory Dudek<sup>3</sup>&ensp;
+                Xueqian Wang<sup>†,1</sup>&ensp;
+                Jian Su<sup>†,2</sup>
+              </p>
+              <p className="mansionAffiliationLine">
+                <sup>1</sup>Tsinghua University&emsp;
+                <sup>2</sup>AgiBot&emsp;
+                <sup>3</sup>McGill University, MILA – Quebec AI Institute
+              </p>
+              <p className="mansionFootnoteLine">
+                * Equal contribution.&ensp;† Corresponding authors.<br />§ Work done during an internship at AgiBot.
+              </p>
             </div>
 
-            <div className="mansionHeroLogoContainer">
-              <img src="/img/智元logo英文-白色-横版.png" alt="Agibot Logo" className="mansionHeroLogo" />
+            <div className="mansionLinkButtons">
+              <a className="mansionLinkBtn" href="#" aria-disabled="true">
+                <span>📄</span> Paper
+              </a>
+              <a className="mansionLinkBtn" href="#" aria-disabled="true">
+                <span>📝</span> arXiv
+              </a>
+              <a className="mansionLinkBtn" href="#" aria-disabled="true">
+                <span>🐙</span> Code
+              </a>
+              <a className="mansionLinkBtn" href="https://huggingface.co/datasets/superbigsaw/MansionWorld" target="_blank" rel="noopener noreferrer">
+                <span>🤗</span> Dataset
+              </a>
             </div>
+
           </div>
         </div>
       </header>
@@ -184,9 +208,15 @@ function DatasetPreview() {
           ))}
         </div>
 
-        <div className="text--center margin-top--lg">
-          <Link className="button button--secondary button--lg" to="/docs/dataset/mansionworld">
-            Explore full dataset metadata
+        <div className="mansionButtons text--center margin-top--lg">
+          <Link className="button button--primary button--lg" to="/docs/getting-started/quickstart">
+            Quickstart
+          </Link>
+          <Link className="button button--secondary button--lg" to="/docs/api/overview">
+            API reference
+          </Link>
+          <Link className="button button--outline button--lg mansionButtonGray" to="/docs/dataset/mansionworld">
+            MansionWorld dataset
           </Link>
         </div>
       </div>
@@ -204,51 +234,15 @@ export default function Home() {
       <InteractiveShowcase />
       <DatasetPreview />
       <main className="container margin-vert--lg">
-        <section className="row">
-          <Feature title="MansionWorld">
-            A large-scale collection of multi-floor buildings with
-            realistic room connectivity, object distributions, and cross-floor semantics.
-          </Feature>
-          <Feature title="MansionGym">
-            A reproducible wrapper for running multi-floor episodes,
-            managing floor transitions, and tracking object state across floors.
-          </Feature>
-          <Feature title="Skills API">
-            A clean, testable layer of *high-level* skills (stairs, elevators, navigation,
-            object interaction) designed for long-horizon planning.
-          </Feature>
-        </section>
-
-        <section className="row margin-top--lg">
-          <div className="col col--6">
-            <div className="callout">
-              <h2>Read the docs like an API reference</h2>
-              <p>
-                The docs are organized around <b>concepts</b>, <b>environment state</b>, and a
-                structured <b>skills</b> interface. If you like iTHOR’s API reference style,
-                start here:
-              </p>
-              <div className="mansionButtons">
-                <Link className="button button--primary" to="/docs/api/overview">API overview</Link>
-                <Link className="button button--secondary" to="/docs/environment/observations">Observations</Link>
-                <Link className="button button--secondary" to="/docs/skills/overview">Skills</Link>
-              </div>
-            </div>
-          </div>
-          <div className="col col--6">
-            <div className="callout">
-              <h2>Reproduce results</h2>
-              <p>
-                This repo is structured so that <b>dataset download</b>, <b>environment setup</b>, and
-                <b>evaluation</b> are explicit and versioned. See:
-              </p>
-              <div className="mansionButtons">
-                <Link className="button button--secondary" to="/docs/dataset/mansionworld">Dataset</Link>
-                <Link className="button button--secondary" to="/docs/getting-started/installation">Installation</Link>
-                <Link className="button button--secondary" to="/docs/project/citation">Citation</Link>
-              </div>
-            </div>
-          </div>
+        <section className="mansionCitationSection">
+          <h2>Citation</h2>
+          <p>If you use MANSION in your research, please cite:</p>
+          <pre className="mansionBibTeX"><code>{`@article{mansion2025,
+  title   = {MANSION: Multi-floor LANguage-to-3D Scene generatION for long-horizon tasks},
+  author  = {TODO},
+  journal = {TODO},
+  year    = {2025},
+}`}</code></pre>
         </section>
       </main>
     </Layout>

@@ -11,11 +11,11 @@ title: Overview
 ```python
 from mansion_gym.mansion_env import MansionGym
 
-env = MansionGym(building_dir="path/to/building", max_steps=30)
+env = MansionGym(building_dir="path/to/building", initial_floor=1, max_steps=1000)
 obs, info = env.reset()
 ````
 
-`building_dir` should contain per-floor scene JSONs (`*.json`).
+`building_dir` should contain per-floor scene JSONs named `floor_1.json`, `floor_2.json`, etc.
 
 ## Step API (AI2-THOR-style only)
 

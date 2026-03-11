@@ -11,6 +11,12 @@ build/
 .idea/
 .DS_Store
 
+# Unrelated scripts
+frames_to_video.py
+generate_floor_video.py
+connect_to_unity.ipynb
+智元logo英文-白色-横版.png
+
 # Data and Logs
 saved_frames/
 scenedata/

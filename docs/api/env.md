@@ -26,7 +26,7 @@ from mansion_gym.mansion_env import MansionGym
 
 ```python
 class MansionGym(gymnasium.Env):
-    def __init__(self, building_dir: str, max_steps: int = 30, save_dir: str = "assets"): ...
+    def __init__(self, building_dir: str, initial_floor: int = 1, max_steps: int = 1000, save_dir: str = "assets", capture_panoramas: bool = False): ...
     def reset(self, *, seed=None, options=None, skip_reset: bool = False): ...
     def step(self, action=None, **kwargs): ...
     def close(self): ...
@@ -36,18 +36,20 @@ class MansionGym(gymnasium.Env):
 
 ## Parameters
 
-### `__init__(building_dir, max_steps=30, save_dir="assets")`
+### `__init__(building_dir, initial_floor=1, max_steps=1000, save_dir="assets", capture_panoramas=False)`
 
-* **building_dir** (`str`): Path to a building directory containing per-floor scene JSON files (`*.json`). All `*.json` files are loaded as floors.
-* **max_steps** (`int`, default `30`): Maximum steps per episode.
-* **save_dir** (`str`, default `"assets"`): Subdirectory under `building_dir` used to store debug artifacts (e.g., captured panoramas / graphs / object state dumps).
+* **building_dir** (`str`): Path to a building directory containing per-floor scene JSON files. Files should be named `floor_1.json`, `floor_2.json`, etc. If that naming is not found, falls back to sorting all `*.json` files in the directory.
+* **initial_floor** (`int`, default `1`): The floor the agent starts on.
+* **max_steps** (`int`, default `1000`): Maximum steps per episode.
+* **save_dir** (`str`, default `"assets"`): Subdirectory under `building_dir` used to store debug artifacts (e.g., object state dumps, graphs). Full path is `building_dir/save_dir/`.
+* **capture_panoramas** (`bool`, default `False`): If `True`, captures per-room landmark views on initialization. Disabled by default because rendering all floors on first load is slow.
 
 **Side effects on initialization**
 
 * Loads all floor JSONs under `building_dir`.
 * Creates and configures an AI2-THOR `Controller` via `setup_scene(self, change_floor=False)`.
 * Calls `reset()` once during initialization.
-* If `save_dir` does not exist, it is created and landmark views may be captured into it. 
+* Registers the skill registry after `reset()` completes.
 
 ---
 
@@ -81,6 +83,10 @@ obs, reward, terminated, truncated, info = env.step(
 
 * If `action` matches a key in `env.skill_registry`, the corresponding skill handler is invoked.
 * Otherwise, the action is passed through to `ai2thor.controller.Controller.step(action=..., **params)`.
+
+:::caution Infrastructure guard
+Raw `PickupObject` actions are blocked if `objectId` contains `"stair"` or `"elevator"` (case-insensitive). The step returns `lastActionSuccess: False` with an error message. Use the `TakeStairs` or `UseElevator` skills instead.
+:::
 
 ---
 
@@ -180,7 +186,6 @@ The environment also exposes convenience methods that wrap internal utilities:
 * `visualize_landmarks(filename="landmarks.png")`
 * `visualize_room_graph(filename="room_graph.png")`
 * `get_room_polygons()`
-* `capture_landmark_views(height_offset=0.5)`
 
 ---
 
@@ -188,7 +193,7 @@ The environment also exposes convenience methods that wrap internal utilities:
 
 After each step, the environment records object metadata for the current floor and writes it to:
 
-* `"{save_dir}/floor_{current_floor}_object_states.json"`
+* `"{building_dir}/{save_dir}/floor_{current_floor}_object_states.json"`
 
 This is done automatically by `record_object_states()`. 
 
@@ -199,7 +204,7 @@ This is done automatically by `record_object_states()`.
 ```python
 from mansion_gym.mansion_env import MansionGym
 
-env = MansionGym(building_dir="path/to/building", max_steps=30)
+env = MansionGym(building_dir="path/to/building", initial_floor=1, max_steps=1000)
 
 obs, info = env.reset()
 

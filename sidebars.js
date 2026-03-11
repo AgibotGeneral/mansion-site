@@ -40,19 +40,6 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Environment",
-      collapsible: false,
-      collapsed: false,
-      link: { type: "doc", id: "environment/initialization" },
-      items: [
-        "environment/initialization",
-        "environment/observations",
-        "environment/scene-loading",
-        "environment/object-state",
-      ],
-    },
-    {
-      type: "category",
       label: "API reference",
       collapsible: false,
       collapsed: false,
