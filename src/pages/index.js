@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import BrowserOnly from '@docusaurus/BrowserOnly';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 function InteractiveShowcase() {
   const [activeFloor, setActiveFloor] = useState(1);
   const floors = [1, 2, 3, 4, 5, 6];
+  const buildingImg = useBaseUrl('/img/building.png');
+  const floorVideo = useBaseUrl(`/video/floor${activeFloor}_rotation.mp4`);
+  const taskVideo = useBaseUrl('/video/output_video.mp4');
 
   return (
     <section className="mansionShowcase">
@@ -39,7 +43,7 @@ function InteractiveShowcase() {
                     ))}
                   </div>
                   <div className="mansionBuildingImgContainer">
-                    <img src="/img/building.png" alt="Building Diagram" className="mansionBuildingImg" />
+                    <img src={buildingImg} alt="Building Diagram" className="mansionBuildingImg" />
                   </div>
                 </div>
               </div>
@@ -59,7 +63,7 @@ function InteractiveShowcase() {
                   playsInline
                   className="mansionVideo"
                 >
-                  <source src={`/video/floor${activeFloor}_rotation.mp4`} type="video/mp4" />
+                  <source src={floorVideo} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -77,7 +81,7 @@ function InteractiveShowcase() {
                   playsInline
                   className="mansionVideo"
                 >
-                  <source src="/video/output_video.mp4" type="video/mp4" />
+                  <source src={taskVideo} type="video/mp4" />
                 </video>
               </div>
               <div className="mansionTaskDescription">
@@ -162,13 +166,14 @@ function Feature({ title, children }) {
 
 function DatasetPreview() {
   const scenes = [
-    { title: 'A three-story luxury villa equipped with entertainment and exercise facilities', img: '/img/dataset/villa.png' },
-    { title: 'A large-scale hospital', img: '/img/dataset/hospital.png' },
-    { title: 'A high school building', img: '/img/dataset/high_school.png' },
-    { title: 'A four story office building', img: '/img/dataset/office.png' },
-    { title: 'A entertainment complex', img: '/img/dataset/entertainment.png' },
-    { title: 'A compact apartment designed for two people', img: '/img/dataset/apartment.png' },
+    { title: 'A three-story luxury villa equipped with entertainment and exercise facilities', img: useBaseUrl('/img/dataset/villa.png') },
+    { title: 'A large-scale hospital', img: useBaseUrl('/img/dataset/hospital.png') },
+    { title: 'A high school building', img: useBaseUrl('/img/dataset/high_school.png') },
+    { title: 'A four story office building', img: useBaseUrl('/img/dataset/office.png') },
+    { title: 'A entertainment complex', img: useBaseUrl('/img/dataset/entertainment.png') },
+    { title: 'A compact apartment designed for two people', img: useBaseUrl('/img/dataset/apartment.png') },
   ];
+  const distributionImg = useBaseUrl('/img/dataset/distribution.png');
 
   return (
     <section className="mansionDatasetPreview">
@@ -184,7 +189,7 @@ function DatasetPreview() {
         <div className="row margin-bottom--md">
           <div className="col col--10 col--offset-1">
             <div className="mansionDistributionFull">
-              <img src="/img/dataset/distribution.png" alt="Distribution" />
+              <img src={distributionImg} alt="Distribution" />
             </div>
           </div>
         </div>
