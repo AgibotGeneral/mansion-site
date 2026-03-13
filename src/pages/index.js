@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import BrowserOnly from '@docusaurus/BrowserOnly';
@@ -7,9 +7,16 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 function InteractiveShowcase() {
   const [activeFloor, setActiveFloor] = useState(1);
   const floors = [1, 2, 3, 4, 5, 6];
-  const buildingImg = useBaseUrl('/img/building.png');
+  const buildingImg = useBaseUrl('/img/building.webp');
   const floorVideo = useBaseUrl(`/video/floor${activeFloor}_rotation.mp4`);
   const taskVideo = useBaseUrl('/video/output_video.mp4');
+  const floorVideoRef = useRef(null);
+
+  useEffect(() => {
+    if (floorVideoRef.current) {
+      floorVideoRef.current.playbackRate = 0.5;
+    }
+  }, [activeFloor]);
 
   return (
     <section className="mansionShowcase">
@@ -57,6 +64,7 @@ function InteractiveShowcase() {
               <div className="mansionVideoContainer wide">
                 <video
                   key={`floor-${activeFloor}`}
+                  ref={floorVideoRef}
                   autoPlay
                   loop
                   muted
@@ -85,7 +93,7 @@ function InteractiveShowcase() {
                 </video>
               </div>
               <div className="mansionTaskDescription">
-                "Starting from the 4th floor, go to the 1st floor to pick up my noodle delivery, then put it into the refrigerator in the 5th-floor dining area."
+                "Starting from the 3th floor, go to the 1st floor to pick up my noodle delivery, then put it into the refrigerator in the 4th floor dining area."
               </div>
             </div>
           </div>
@@ -166,14 +174,14 @@ function Feature({ title, children }) {
 
 function DatasetPreview() {
   const scenes = [
-    { title: 'A three-story luxury villa equipped with entertainment and exercise facilities', img: useBaseUrl('/img/dataset/villa.png') },
-    { title: 'A large-scale hospital', img: useBaseUrl('/img/dataset/hospital.png') },
-    { title: 'A high school building', img: useBaseUrl('/img/dataset/high_school.png') },
-    { title: 'A four story office building', img: useBaseUrl('/img/dataset/office.png') },
-    { title: 'A entertainment complex', img: useBaseUrl('/img/dataset/entertainment.png') },
-    { title: 'A compact apartment designed for two people', img: useBaseUrl('/img/dataset/apartment.png') },
+    { title: 'A three-story luxury villa equipped with entertainment and exercise facilities', img: useBaseUrl('/img/dataset/villa.webp') },
+    { title: 'A large-scale hospital', img: useBaseUrl('/img/dataset/hospital.webp') },
+    { title: 'A high school building', img: useBaseUrl('/img/dataset/high_school.webp') },
+    { title: 'A four story office building', img: useBaseUrl('/img/dataset/office.webp') },
+    { title: 'A entertainment complex', img: useBaseUrl('/img/dataset/entertainment.webp') },
+    { title: 'A compact apartment designed for two people', img: useBaseUrl('/img/dataset/apartment.webp') },
   ];
-  const distributionImg = useBaseUrl('/img/dataset/distribution.png');
+  const distributionImg = useBaseUrl('/img/dataset/distribution.webp');
 
   return (
     <section className="mansionDatasetPreview">
