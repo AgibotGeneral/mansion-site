@@ -143,7 +143,7 @@ function Hero() {
               <a className="mansionLinkBtn" href="#" aria-disabled="true">
                 <span>📄</span> Paper
               </a>
-              <a className="mansionLinkBtn" href="#" aria-disabled="true">
+              <a className="mansionLinkBtn" href="https://arxiv.org/abs/2603.11554" target="_blank" rel="noopener noreferrer">
                 <span>📝</span> arXiv
               </a>
               <a className="mansionLinkBtn" href="#" aria-disabled="true">
@@ -250,11 +250,14 @@ export default function Home() {
         <section className="mansionCitationSection">
           <h2>Citation</h2>
           <p>If you use MANSION in your research, please cite:</p>
-          <pre className="mansionBibTeX"><code>{`@article{mansion2025,
-  title   = {MANSION: Multi-floor LANguage-to-3D Scene generatION for long-horizon tasks},
-  author  = {TODO},
-  journal = {TODO},
-  year    = {2025},
+          <pre className="mansionBibTeX"><code>{`@misc{che2026mansionmultifloorlanguageto3dscene,
+  title         = {MANSION: Multi-floor lANguage-to-3D Scene generatIOn for loNg-horizon tasks},
+  author        = {Lirong Che and Shuo Wen and Shan Huang and Chuang Wang and Yuzhe Yang and Gregory Dudek and Xueqian Wang and Jian Su},
+  year          = {2026},
+  eprint        = {2603.11554},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  url           = {https://arxiv.org/abs/2603.11554},
 }`}</code></pre>
         </section>
       </main>
