@@ -146,7 +146,7 @@ function Hero() {
               <a className="mansionLinkBtn" href="https://arxiv.org/abs/2603.11554" target="_blank" rel="noopener noreferrer">
                 <span>📝</span> arXiv
               </a>
-              <a className="mansionLinkBtn" href="#" aria-disabled="true">
+              <a className="mansionLinkBtn" href="https://github.com/AgibotGeneral/MANSION" target="_blank" rel="noopener noreferrer">
                 <span>🐙</span> Code
               </a>
               <a className="mansionLinkBtn" href="https://huggingface.co/datasets/superbigsaw/MansionWorld" target="_blank" rel="noopener noreferrer">
